@@ -5,9 +5,7 @@ require 'pathname'
 class Rcd # :nodoc:
   attr_accessor :options, :profile
   def initialize(argv) # :nodoc:
-    # profile path
-    @profile = Pathname.new(Dir.home).join('.rcd_profile')
-    
+    argv.push('-h') if argv.length.zero?
     @options = OpenStruct.new
     (OptionParser.new do |opts|
       opts.banner = 'Usage: rcd path/key [options]'
@@ -26,6 +24,7 @@ class Rcd # :nodoc:
         options.key = key
         options.path = Dir.pwd
         options.add_new_path = true
+        # to refactor => try to remove such stupid behaviors
         argv.delete('-p')
         argv.delete('--add-pwd')
         argv.delete(key)
@@ -47,6 +46,8 @@ class Rcd # :nodoc:
       # end
     end).parse(argv)
     
+    # profile path
+    @profile = Pathname.new(Dir.home).join('.rcd_profile')
     list_all_saved_paths if options.list_all
     add_new_target_path if options.add_new_path
     puts(get_path(argv[0])) unless argv.length.zero?

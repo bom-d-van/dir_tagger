@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'rcd'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.executables << 'rcd'
   s.date        = '2012-08-22'
   s.summary     = 'My First Ruby Gem!'
