@@ -22,10 +22,11 @@ class Rcd # :nodoc:
         argv.delete("#{key},#{path}")
       end
       
-      opts.on('--add-pwd [key]', :REQUIRED, String, 'Add $(pwd) and a key in rcd_profile') do |key|
+      opts.on('-p', '--add-pwd [key]', :REQUIRED, String, 'Add $(pwd) and a key in rcd_profile') do |key|
         options.key = key
         options.path = Dir.pwd
         options.add_new_path = true
+        argv.delete('-p')
         argv.delete('--add-pwd')
         argv.delete(key)
       end
@@ -56,9 +57,9 @@ class Rcd # :nodoc:
       puts "\e[031m Not Paths Saved"
       exit
     end
-    puts ' All the saved paths:'
+    puts 'All the saved paths:'
     profile.each_line do |l|
-      puts(sprintf(" \e[032m%10s\e[0m    %s", *l.split(','))) unless l.match(/\^n/)
+      puts(sprintf("\e[032m%10s\e[0m    %s", *l.split(','))) unless l.match(/\^n/)
     end
   end
   
