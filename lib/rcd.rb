@@ -1,6 +1,5 @@
 require 'optparse'
 require 'ostruct'
-# require 'yaml'
 require 'pathname'
 
 class Rcd # :nodoc:
@@ -11,7 +10,7 @@ class Rcd # :nodoc:
     
     @options = OpenStruct.new
     (OptionParser.new do |opts|
-      opts.banner = 'Usage: xcd path/key [options]'
+      opts.banner = 'Usage: rcd path/key [options]'
       opts.separator ''
       opts.separator 'SPECIFIC OPTIONS:'
 
@@ -70,5 +69,3 @@ class Rcd # :nodoc:
     path
   end
 end
-
-Rcd.new ARGV.dup
