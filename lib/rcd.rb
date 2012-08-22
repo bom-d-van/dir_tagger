@@ -22,6 +22,14 @@ class Rcd # :nodoc:
         argv.delete("#{key},#{path}")
       end
       
+      opts.on('--add-pwd key', :REQUIRED, String, 'Add $(pwd) and a key in rcd_profile') do |key|
+        options.key = key
+        options.path = Dir.pwd
+        options.add_new_path = true
+        agv.delete('--add-pwd')
+        agv.delete(key)
+      end
+      
       opts.on('-l', 'List all the saved paths') do
         options.list_all = true
         argv.delete('-l')
