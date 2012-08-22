@@ -1,5 +1,3 @@
-require_relative 'path_center'
-require_relative 'xto'
 require 'yaml'
 require 'fileutils'
 require 'pathname'

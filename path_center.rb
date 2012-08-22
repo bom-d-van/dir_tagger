@@ -6,7 +6,7 @@ module PathCenter
   Options = OpenStruct.new
   # options.
   Opts = OptionParser.new do |opts|
-    opts.banner = 'Usage: xto file/path [options]'
+    opts.banner = 'Usage: xto [mode] file/path [options]'
     
     opts.separator ''
     opts.separator 'SPECIFIC OPTIONS:'
@@ -23,6 +23,12 @@ module PathCenter
       Options.list = true
     end
     
+    opts.on('-r', '--register', 'Register current path as a searching path') do
+      Options.register = true
+      CoreOpts.delete('-r')
+      CoreOpts.delete('--register')
+    end
+    
     # opts.on('-s', '--setting', 'Some environment setting') do
     #   
     # end
@@ -35,7 +41,7 @@ module PathCenter
       Options.tail = true
     end
     
-    opts.on('-r', '--remove', 'Remove matching path from path document') do
+    opts.on('--remove', 'Remove matching path from path document') do
       Options.remove = true
     end
     
@@ -51,7 +57,7 @@ module PathCenter
     opts.separator 'COMMON OPTIONS:'
     
     opts.on('-h', '--help', 'Display the help message') do
-      puts opts
+      p opts
       exit
     end
     
@@ -61,4 +67,4 @@ module PathCenter
   end
 end
 
-PathCenter::Opts.parse!(ARGV)
+# PathCenter::Opts.parse!(ARGV)
