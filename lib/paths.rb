@@ -18,8 +18,6 @@ class Paths # :nodoc:
         options.key = key
         options.path = path.nil? ? Dir.pwd : path
         options.add_new_path = true
-        # argv.delete('-a')
-        # argv.delete("#{key},#{path}")
       end
       
       opts.on('-r', '--remove key', String, 'Remove Key') do |key|
@@ -33,19 +31,8 @@ class Paths # :nodoc:
         options.new_key = new_key
       end
       
-      # opts.on('-p', '--add-pwd [key]', :REQUIRED, String, 'Add $(pwd) and a key in rcd_profile') do |key|
-      #   options.key = key
-      #   options.path = Dir.pwd
-      #   options.add_new_path = true
-      #   # to refactor => try to remove such stupid behaviors
-      #   argv.delete('-p')
-      #   argv.delete('--add-pwd')
-      #   argv.delete(key)
-      # end
-      
       opts.on('-l', '--list', 'List all the saved paths') do
         options.list_all = true
-        # argv.delete('-l')
       end
       
       opts.on('-h', '--help', 'Display help message') do
