@@ -38,6 +38,7 @@ class Paths # :nodoc:
       # ToDo => Support listing all saved keys
       opts.on('-k', '--keys [pattern]', String, '') do |pattern|
         options.get_key = true
+        pattern = pattern.nil? ? '' : pattern
         options.pattern = pattern
       end
       
