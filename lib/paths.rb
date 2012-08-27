@@ -20,12 +20,12 @@ class Paths # :nodoc:
         options.add_new_path = true
       end
       
-      opts.on('-r', '--remove key', String, 'Remove Key') do |key|
+      opts.on('-r', '--remove key', :REQUIRED, String, 'Remove Key') do |key|
         options.remove_path = true
         options.key = key
       end
       
-      opts.on('--rename old_key,new_key', Array, 'Rename key') do |old_key, new_key|
+      opts.on('--rename old_key,new_key', :REQUIRED, Array, 'Rename key') do |old_key, new_key|
         options.rename_key = true
         options.old_key = old_key
         options.new_key = new_key
@@ -33,6 +33,12 @@ class Paths # :nodoc:
       
       opts.on('-l', '--list', 'List all the saved paths') do
         options.list_all = true
+      end
+      
+      # ToDo => Support listing all saved keys
+      opts.on('-k', '--keys [pattern]', String, '') do |pattern|
+        options.get_key = true
+        options.pattern = pattern
       end
       
       opts.on('-h', '--help', 'Display help message') do
@@ -52,6 +58,7 @@ class Paths # :nodoc:
     add_new_target_path if options.add_new_path
     remove_path if options.remove_path
     rename_key if options.rename_key
+    puts(get_key) if options.get_key
     puts(get_path(argv[0])) if argv.length == 1 && !argv[0].include?('-')
   end
   
@@ -97,15 +104,36 @@ class Paths # :nodoc:
     puts "\e[32m Rename Success"
   end
   
-  def get_path(key)
-    path = ''
-    profile.each_line do |line|
-      path_pair = line.split(',')
-      if path_pair[0].match(Regexp.new(key))
-        path = path_pair[1]
-        break
-      end
-    end
-    path
+  def get_key
+    getter(options.pattern, 0)
+    # completed_key = ''
+    # pattern = Regexp.new(options.pattern)
+    # profile.each_line do |line|
+    #   key = line.split(',')[0]
+    #   if key.match(pattern)
+    #     completed_key = key
+    #     break
+    #   end
+    # end
+    # completed_key
   end
+  
+  def get_path(key)
+    getter(key, 1)
+  end
+  
+  private
+    def getter(key, index)
+      target = ''
+      pattern = Regexp.new(key)
+      profile.each_line do |line|
+        key, path = line.split(',')
+        if key.match(pattern)
+          # path = path_pair[1]
+          target = (index == 0 ? key : path)
+          break
+        end
+      end
+      target
+    end
 end
