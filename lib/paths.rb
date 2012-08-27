@@ -7,7 +7,7 @@ class Paths # :nodoc:
   Profile_Name = '.paths_profile'
   attr_accessor :options, :profile
   def initialize(argv) # :nodoc:
-    argv.push('-h') if argv.length.zero?
+    argv.push('-l') if argv.length.zero?
     @options = OpenStruct.new
     (OptionParser.new do |opts|
       opts.banner = 'Usage: paths key [options]'
