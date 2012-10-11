@@ -19,40 +19,40 @@ class Paths # :nodoc:
         options.path = path.nil? ? Dir.pwd : path
         options.add_new_path = true
       end
-      
+
       opts.on('-r', '--remove key', :REQUIRED, String, 'Remove Key') do |key|
         options.remove_path = true
         options.key = key
       end
-      
+
       opts.on('--rename old_key,new_key', :REQUIRED, Array, 'Rename key') do |old_key, new_key|
         options.rename_key = true
         options.old_key = old_key
         options.new_key = new_key
       end
-      
+
       opts.on('-l', '--list', 'List all the saved paths') do
         options.list_all = true
       end
-      
+
       # ToDo => Support listing all saved keys
       opts.on('-k', '--keys [pattern]', String, '') do |pattern|
         options.get_key = true
         pattern = pattern.nil? ? '' : pattern
         options.pattern = pattern
       end
-      
+
       opts.on('-h', '--help', 'Display help message') do
         p opts
         exit
       end
-      
+
       # opts.on('-v', '--version', 'Display help message') do
       #   p opts
       #   exit
       # end
     end).parse(argv)
-    
+
     # profile path
     @profile = Pathname.new(Dir.home).join(Profile_Name)
     list_all_saved_paths if options.list_all
@@ -62,7 +62,7 @@ class Paths # :nodoc:
     puts(get_key) if options.get_key
     puts(get_path(argv[0])) if argv.length == 1 && !argv[0].include?('-')
   end
-  
+
   def list_all_saved_paths
     unless profile.exist?
       puts "\e[031m Not Paths Saved"
@@ -73,7 +73,7 @@ class Paths # :nodoc:
       puts(sprintf("\e[032m%10s\e[0m    %s", *l.split(','))) unless l.match(/\^n/)
     end
   end
-  
+
   def add_new_target_path
     mode = profile.exist? ? 'a' : 'w'
     profile.open(mode) do |f|
@@ -81,7 +81,7 @@ class Paths # :nodoc:
     end
     puts "\e[32m Add Success"
   end
-  
+
   def remove_path
     tmp_paths_profile = Tempfile.new(Profile_Name)
     profile.each_line do |line|
@@ -91,7 +91,7 @@ class Paths # :nodoc:
     FileUtils.mv(tmp_paths_profile.to_path, profile.to_path)
     puts "\e[31m Remove Success"
   end
-  
+
   def rename_key
     tmp_paths_profile = Tempfile.new(Profile_Name)
     profile.each_line do |line|
@@ -104,9 +104,9 @@ class Paths # :nodoc:
     FileUtils.mv(tmp_paths_profile.to_path, profile.to_path)
     puts "\e[32m Rename Success"
   end
-  
+
   def get_key
-    getter(options.pattern, 0)
+    line_parser(options.pattern, 0)
     # completed_key = ''
     # pattern = Regexp.new(options.pattern)
     # profile.each_line do |line|
@@ -118,13 +118,13 @@ class Paths # :nodoc:
     # end
     # completed_key
   end
-  
+
   def get_path(key)
-    getter(key, 1)
+    line_parser(key, 1)
   end
-  
+
   private
-    def getter(key, index)
+    def line_parser(key, index)
       target = ''
       pattern = Regexp.new(key)
       profile.each_line do |line|
