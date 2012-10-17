@@ -99,7 +99,8 @@ module DirTagger # :nodoc:
         # ToDo => Support listing all saved keys
         # List all or specified tags
         opts.on('-t', '--tags [pattern1, ..]', Array, '') do |pattern|
-          options.actions.push :list_tags
+          # options.actions.push :list_tags
+          options.actions.push :get_tag
           pattern = pattern.nil? ? '' : pattern
           options.pattern = pattern
         end
@@ -112,7 +113,7 @@ module DirTagger # :nodoc:
         end
 
         opts.on('-v', '--version', 'List current TagDir Version') do
-          puts '2.0.0'
+          puts '2.0.2'
           exit
         end
 
@@ -212,9 +213,9 @@ module DirTagger # :nodoc:
     #   
     # end
 
-    # def get_tag
-    #   profile_parser(options.pattern, 0)
-    # end
+    def get_tag
+      puts profile_parser(options.pattern, 0).last
+    end
 
     def get_dir
       puts profile_parser(options.tags, 1)
