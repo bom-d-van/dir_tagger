@@ -1,35 +1,91 @@
-rcd
+DirTagger
 ===
 
-A gem saving some frequent used paths and keeping them at hand, both in a very ease and comportable way.
+A gem saving some frequent used paths and keeping them at hand, both in a very ease and comportable way. The concept is to give your directory a tag, and then store it in '~/.tag_dir_profile'. After that, you can retrieve the path of the directory by a shell command with the tag as parameter.
 
 Examples
 -
 ~~~~~ shell
-$ rcd -h
-# Usage: rcd path/key [options]
+$ dir_tagger -h
+# Usage: tagdir tag[,directory] [options]
 # 
 # SPECIFIC OPTIONS:
-#     -a [key,new_path]                Add a new target file or direcotry
-#     -l                               List all the saved paths
-#     -h                               Display help message
+#     -a, --add tag[,directory]        Tag a directory, the defaualt directory is the current directory
+#     -u, --under tag[,tag2, ..]       Operate tag within parent tags
+#     -r, --remove tag,[tag2, ..]      Remove one or more tags
+#     -l, --list                       List all the saved paths
+#     -t, --tags [pattern1, ..]
+#     -d, --dir [pattern1, ..]
+#     -v, --version                    List current TagDir Version
+#     -h, --help                       Display help message
 
-# Add a pair of key and path, and then use a key to retrieve you path to some directory
-# Assume you are in such a path: ~/path/to/somewhere
-$ rcd -a home,$(pwd)
+# Tag a directory
+# Assume you are in such a path: ~/path/to/home
+$ dir_tagger -a home
 # Add Success
 
-# output the paths save before
-$ rcd home
-# ~/path/to/somewhere
+# Retrieve directory by the tag
+$ dir_tagger home
+# ~/path/to/home
 
-# Display all the saved paths and keies
-$ rcd -l
+# Ruby style regexp support.
+$ dir_tagger ho
+# ~/path/to/home
+
+# Nested Tagging
+$ echo pwd
+# ~/path/to/home/code
+$ dir_tagger -a code -u home
+# Add Success
+$ dir_tagger ho co
+# ~/path/to/home/code
+
+# Display all the saved tags and directories
+$ dir_tagger
 # All the saved paths:
-#       home    ~/path/to/somewhere
+#       home    ~/path/to/home
+#           home    ~/path/to/home/code
+~~~~~
 
+Using dir_tagger in shell
+-
+~~~~~ shell
 # use rcd with cd command
 $ cd $(rcd home)
+
+# some powerful shell snippets with dir_tagger
+function xproj {
+    xmate $*
+    xto $*
+}
+
+function xmate {
+    proj=$(paths $1)
+    proj_name=$(paths -k $1)
+    tmproj=$proj/$proj_name.tmproj
+    if [[ -f $tmproj ]]; then
+        open "$tmproj"
+    elif [[ "$proj" != "" ]]; then
+        mate "$proj"
+    else
+        echo -e '\033[31mPath Not Existed!\033[0m'
+    fi
+}
+
+function xto {
+    xto_path=$(paths $*)
+    if [[ "$xto_path" != "" ]]; then
+        cd "$xto_path"
+    else
+        echo -e '\033[31mPath Not Existed!\033[0m'
+    fi
+}
+
+$ pwd
+# somewhere/else
+$ xto ho
+# path/to/home
+
 ~~~~~
 
 And that's all, hope you enjoy my first ruby gem. :-)
