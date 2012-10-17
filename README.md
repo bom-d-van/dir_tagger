@@ -2,6 +2,7 @@ DirTagger
 ===
 
 A gem saving some frequent used paths and keeping them at hand, both in a very ease and comportable way. The concept is to give your directory a tag, and then store it in '~/.tag_dir_profile'. After that, you can retrieve the path of the directory by a shell command with the tag as parameter.
+https://github.com/bom-d-van/dir_tagger
 
 Examples
 -
