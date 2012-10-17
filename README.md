@@ -55,14 +55,18 @@ Using dir_tagger in shell
 $ cd $(rcd home)
 
 # some powerful shell snippets with dir_tagger
-function xproj {
-    xmate $*
-    xto $*
+function xto {
+    xto_path=$(dir_tagger $*)
+    if [[ "$xto_path" != "" ]]; then
+        cd "$xto_path"
+    else
+        echo -e '\033[31mPath Not Existed!\033[0m'
+    fi
 }
 
 function xmate {
-    proj=$(paths $1)
-    proj_name=$(paths -k $1)
+    proj=$(dir_tagger $1)
+    proj_name=$(dir_tagger -k $1)
     tmproj=$proj/$proj_name.tmproj
     if [[ -f $tmproj ]]; then
         open "$tmproj"
@@ -73,13 +77,9 @@ function xmate {
     fi
 }
 
-function xto {
-    xto_path=$(paths $*)
-    if [[ "$xto_path" != "" ]]; then
-        cd "$xto_path"
-    else
-        echo -e '\033[31mPath Not Existed!\033[0m'
-    fi
+function xproj {
+    xmate $*
+    xto $*
 }
 
 $ pwd
