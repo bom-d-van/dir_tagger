@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'DirTagger'
-  s.version     = '2.0.3'
+  s.version     = '2.0.5'
   s.executables << 'dir_tagger'
   s.date        = '2012-08-22'
   s.summary     = '*nix system file system helper'

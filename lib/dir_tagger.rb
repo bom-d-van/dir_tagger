@@ -113,7 +113,7 @@ module DirTagger # :nodoc:
         end
 
         opts.on('-v', '--version', 'List current TagDir Version') do
-          puts '2.0.2'
+          puts Gem.latest_spec_for('DirTagger').version.to_s
           exit
         end
 
@@ -130,7 +130,7 @@ module DirTagger # :nodoc:
       end).parse(argv)
 
       # Preparing for the running environment
-      @profile = Pathname.new(Dir.home).join(Profile_Name) # profile path
+      @profile = Pathname.new(File.expand_path('~')).join(Profile_Name) # profile path
       @dir_taggers = DirTaggers.new
       # Run actions
       if options.actions.empty?

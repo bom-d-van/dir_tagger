@@ -1,4 +1,4 @@
 #! /usr/bin/env ruby
-require_relative '../lib/dir_tagger.rb'
+require File.expand_path(File.dirname(__FILE__) + '/../lib/dir_tagger.rb')
 
 DirTagger::DirTaggerOperator.new ARGV
