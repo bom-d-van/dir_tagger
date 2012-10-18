@@ -200,7 +200,7 @@ module DirTagger # :nodoc:
 
     def tag_dir_printer(dir_taggers, prefix = 0)
       dir_taggers.each do |dt|
-        puts sprintf("\e[032m%#{dir_taggers.max_tag_length + prefix}s\e[0m  %s", dt.tag, dt.dir)
+        puts ' ' * prefix + sprintf("\e[032m%-#{dir_taggers.max_tag_length}s\e[0m  %s", dt.tag, dt.dir)
         tag_dir_printer dt.children, dir_taggers.max_tag_length + prefix
       end
     end
